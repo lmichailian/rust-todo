@@ -32,13 +32,19 @@ impl Todo {
 
     fn save(self) -> Result<(), std::io::Error> {
         let mut content = String::new();
-        
         for (k, v) in self.map {
             let record = format!("{}\t{}\n", k, v);
             content.push_str(&record);
         }
 
         std::fs::write("db.txt", content)
+    }
+
+    fn complete(&mut self, key: &String) -> Option<()> {
+        match self.map.get_mut(key) {
+            Some(v) => Some(*v = false),
+            None => None,
+        }
     }
 }
 
@@ -54,6 +60,14 @@ fn main() {
         match todo.save() {
             Ok(_) => println!("todo saved"),
             Err(why) => println!("An error ocurred {}", why),
+        }
+    } else if action == "complete" {
+        match todo.complete(&item) {
+            None => println!("'{}' is not present in the list", item),
+            Some(_) => match todo.save() {
+                Ok(_) => println!("todo saved"),
+                Err(why) => println!("An error occurred: {}", why),
+            },
         }
     }
 }
