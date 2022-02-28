@@ -84,7 +84,6 @@ impl Todo {
             .open("db.json")?;
 
         let map = serde_json::from_reader(file)?;
-        
         Ok(Todo { map })
     }
 }
