@@ -25,7 +25,7 @@ impl Todo {
             .map(|v| (v[0], v[1]))
             .map(|(k, v)| (String::from(k), bool::from_str(v).unwrap()))
             .collect();
-        Ok(Todo { map })
+        Ok(Self { map })
     }
 
     fn new_from_json() -> Result<Todo, std::io::Error> {
